@@ -15,11 +15,11 @@ SC_MODULE(InstructionRegister) {
 
     void process(void) {
 
-        opcode.write(instruction_in.read().range(31, 26));
-        rs1.write(instruction_in.read().range(25, 20));
-        rs2.write(instruction_in.read().range(20, 16));
-        rd.write(instruction_in.read().range(15, 11));
-        immediate.write(instruction_in.read().range(15, 0));
+        opcode.write(instruction_in.read().range(31, 26) & 0xFF);
+        rs1.write(instruction_in.read().range(25, 21) & 0xFF);
+        rs2.write(instruction_in.read().range(20, 16) & 0xFF);
+        rd.write(instruction_in.read().range(15, 11) & 0xFF);
+        immediate.write(instruction_in.read().range(15, 0) &0xFFFF);
     }
 
     SC_CTOR(InstructionRegister) {

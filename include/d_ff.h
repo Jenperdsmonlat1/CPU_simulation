@@ -5,12 +5,12 @@
 #include <systemc.h>
 
 
-
+template<int T>
 SC_MODULE(D_FLIP_FLOP) {
 
     sc_in<bool> clk;
-    sc_in<sc_uint<32>> d;
-    sc_out<sc_uint<32>> q;
+    sc_in<sc_uint<T>> d;
+    sc_out<sc_uint<T>> q;
 
 
     void process(void) {

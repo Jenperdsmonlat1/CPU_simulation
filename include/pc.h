@@ -13,7 +13,7 @@ SC_MODULE(PC) {
 
     sc_signal<sc_uint<32>> reg, next;
 
-    D_FLIP_FLOP *d_ff;
+    D_FLIP_FLOP<32> *d_ff;
 
     void process(void) {
 
@@ -26,7 +26,7 @@ SC_MODULE(PC) {
     }
 
     SC_CTOR(PC) {
-        d_ff = new D_FLIP_FLOP("d_flip_flop");
+        d_ff = new D_FLIP_FLOP<32>("d_flip_flop");
         d_ff->d(next);
         d_ff->q(output);
         d_ff->clk(clock);
