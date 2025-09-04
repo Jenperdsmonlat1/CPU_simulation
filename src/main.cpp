@@ -6,12 +6,13 @@
 #include "instruction_memory.h"
 #include "instruction_register.h"
 #include "register_file.h"
+#include "opcode_decoder.h"
 
 
 
 int sc_main(int argc, char **argv) {
 
-    sc_clock clk("clock", 5, SC_MS);
+    /*sc_clock clk("clock", 5, SC_MS);
     sc_signal<sc_uint<32>> output, instruction;
     sc_signal<sc_uint<6>> opcode;
     sc_signal<sc_uint<5>> rs1, rs2, rd;
@@ -71,6 +72,31 @@ int sc_main(int argc, char **argv) {
     im.load_instructions(program);
 
 
+    sc_start(25, SC_MS);*/
+
+    OpcodeDemux demux("opcode_demux");
+
+    sc_signal<sc_uint<6>> opcode;
+    sc_signal<sc_bv<4>> output;
+    
+    demux.opcode(opcode);
+    demux.line_selected(output);
+
+    opcode.write(ADD);
     sc_start(25, SC_MS);
+    std::cout << "Output: " << output.read()[0] << std::endl;
+
+    opcode.write(STORE);
+    sc_start(25, SC_MS);
+    std::cout << "Output: " << output.read()[2] << std::endl;
+
+    opcode.write(LOAD);
+    sc_start(25, SC_MS);
+    std::cout << "Output: " << output.read()[1] << std::endl;
+
+    opcode.write(MOVE);
+    sc_start(25, SC_MS);
+    std::cout << "Output: " << output.read()[3] << std::endl;
+
     return EXIT_SUCCESS;
 }

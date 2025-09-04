@@ -1,11 +1,11 @@
 #ifndef _OPCODE_H
-#define _OPCODE_H
+#define _OPCODE_h
 
 
-#define ADD 0b001010
-#define LOAD 0b101010
-#define STORE 0b110011
-#define MOVE 0b001101
+#define ADD 0b000000
+#define LOAD 0b000001
+#define STORE 0b000010
+#define MOVE 0b000011
 
 #define REGISTER_x0 0b00000
 #define REGISTER_x1 0b00001
