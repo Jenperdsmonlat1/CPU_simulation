@@ -6,6 +6,7 @@
 #define LOAD 0b000001
 #define STORE 0b000010
 #define MOVE 0b000011
+#define NOP 0b000100
 
 #define REGISTER_x0 0b00000
 #define REGISTER_x1 0b00001

@@ -7,6 +7,7 @@
 #include "instruction_register.h"
 #include "register_file.h"
 #include "opcode_decoder.h"
+#include "alu.h"
 
 
 
@@ -85,7 +86,7 @@ int sc_main(int argc, char **argv) {
     };
 
     im.load_instructions(program);
-    sc_start(120, SC_MS);
+    sc_start(80, SC_MS);
 
     return EXIT_SUCCESS;
 }

@@ -5,11 +5,12 @@
 #include <systemc.h>
 
 
+template<typename N>
 SC_MODULE(Mux) {
 
-    sc_in<sc_uint<5>> one, zero;
+    sc_in<N> one, zero;
     sc_in<bool> select_add_port;
-    sc_out<sc_uint<5>> port_selected;
+    sc_out<N> port_selected;
 
 
     void process(void) {
