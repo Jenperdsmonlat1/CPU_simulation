@@ -5,22 +5,23 @@
 #include <systemc.h>
 
 
-template<int T>
+template<typename T>
 SC_MODULE(D_FLIP_FLOP) {
 
-    sc_in<bool> clk;
-    sc_in<sc_uint<T>> d;
-    sc_out<sc_uint<T>> q;
+    sc_in<bool> clk, reset;
+    sc_in<T> d;
+    sc_out<T> q;
 
 
     void process(void) {
-        if (clk.posedge()) q.write(d.read());
-        return;
+        
+        if (reset.read()) q.write((T)0);
+        else q.write(d.read());
     }
 
     SC_CTOR(D_FLIP_FLOP) {
         SC_METHOD(process);
-        sensitive << clk.pos();
+        sensitive << clk.pos() << reset;
     }
 };
 

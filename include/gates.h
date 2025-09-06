@@ -86,7 +86,7 @@ SC_MODULE(OR3) {
     SC_CTOR(OR3) {
 
         SC_METHOD(process);
-        sensitive << a, b << c;
+        sensitive << a << b << c;
     }
 };
 

@@ -47,21 +47,21 @@ SC_MODULE(RegisterFile) {
 
 
     Mux *mux;
-    D_FLIP_FLOP<5> *d_ff[3];
+    D_FLIP_FLOP<sc_uint<5>> *d_ff[3];
 
     SC_CTOR(RegisterFile) {
 
         mux = new Mux("multiplexer");
-        d_ff[0] = new D_FLIP_FLOP<5>("d_ff_1");
+        /*d_ff[0] = new D_FLIP_FLOP<5>("d_ff_1");
         d_ff[1] = new D_FLIP_FLOP<5>("d_ff_2");
-        d_ff[2] = new D_FLIP_FLOP<5>("d_ff_3");
+        d_ff[2] = new D_FLIP_FLOP<5>("d_ff_3");*/
 
         mux->one(one_mux);
         mux->zero(zero_mux);
         mux->select_add_port(selected_port);
         mux->port_selected(addr_selected);
 
-        d_ff[0]->clk(clock);
+        /*d_ff[0]->clk(clock);
         d_ff[0]->d(addr_selected);
         d_ff[0]->q(q1);
 
@@ -71,7 +71,7 @@ SC_MODULE(RegisterFile) {
 
         d_ff[2]->clk(clock);
         d_ff[2]->d(q2);
-        d_ff[2]->q(addr_3_sig);
+        d_ff[2]->q(addr_3_sig);*/
 
         SC_METHOD(process_read);
         sensitive << address_in_1 << address_in_2;

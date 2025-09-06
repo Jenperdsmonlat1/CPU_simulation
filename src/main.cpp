@@ -12,22 +12,26 @@
 
 int sc_main(int argc, char **argv) {
 
-    /*sc_clock clk("clock", 5, SC_MS);
+    sc_clock clk("clock", 20, SC_MS);
     sc_signal<sc_uint<32>> output, instruction;
     sc_signal<sc_uint<6>> opcode;
     sc_signal<sc_uint<5>> rs1, rs2, rd;
     sc_signal<sc_uint<16>> immediate;
     sc_signal<sc_uint<32>> d_out1, d_out2, d_in;
-    sc_signal<bool> we;
+
+    sc_signal<bool> alu_selection, rs_selection, move_selection_port, load_selection_port, we_selection;
+    sc_signal<bool> we, reset;
 
     PC pc("pc");
     Monitor monitor("monitor");
     InstructionMemory<5> im("instruction_memory");
     InstructionRegister ir("instruction_register");
     RegisterFile rf("register_file");
+    OpcodeDecoder opd("opcode_decoder");
 
     pc.clock(clk);
     pc.output(output);
+    pc.reset(reset);
     im.pc_output(output);
     im.im_output(instruction);
     ir.instruction_in(instruction);
@@ -47,6 +51,15 @@ int sc_main(int argc, char **argv) {
     rf.d_out_1(d_out1);
     rf.d_out_2(d_out2);
 
+    opd.opcode(opcode);
+    opd.alu_selection(alu_selection);
+    opd.rs_selection(rs_selection);
+    opd.move_selection_port(move_selection_port);
+    opd.load_selection_port(load_selection_port);
+    opd.we_selection(we_selection);
+    opd.clk(clk);
+    opd.reset(reset);
+
     monitor.clk(clk);
     monitor.pc_output(output);
     monitor.im_output(instruction);
@@ -58,45 +71,21 @@ int sc_main(int argc, char **argv) {
     monitor.d_out1(d_out1);
     monitor.d_out2(d_out2);
     monitor.d_in(d_in);
-
-    we.write(true);
+    monitor.alu_selection(alu_selection);
+    monitor.we_selection(we_selection);
+    monitor.rs_selection(rs_selection);
+    monitor.move_selection_port(move_selection_port);
+    monitor.load_selection_port(load_selection_port);
 
     std::vector<sc_uint<32>> program = {
-        0xA8222800,
-        0xA8222800,
-        0xA8222800,
-        0xA8222800,
-        0xA8222800
+        0x00222800,
+        0x04F401FE,
+        0x09261E00,
+        0x0DAB0000
     };
 
     im.load_instructions(program);
-
-
-    sc_start(25, SC_MS);*/
-
-    OpcodeDemux demux("opcode_demux");
-
-    sc_signal<sc_uint<6>> opcode;
-    sc_signal<sc_bv<4>> output;
-    
-    demux.opcode(opcode);
-    demux.line_selected(output);
-
-    opcode.write(ADD);
-    sc_start(25, SC_MS);
-    std::cout << "Output: " << output.read()[0] << std::endl;
-
-    opcode.write(STORE);
-    sc_start(25, SC_MS);
-    std::cout << "Output: " << output.read()[2] << std::endl;
-
-    opcode.write(LOAD);
-    sc_start(25, SC_MS);
-    std::cout << "Output: " << output.read()[1] << std::endl;
-
-    opcode.write(MOVE);
-    sc_start(25, SC_MS);
-    std::cout << "Output: " << output.read()[3] << std::endl;
+    sc_start(120, SC_MS);
 
     return EXIT_SUCCESS;
 }
