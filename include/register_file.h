@@ -27,8 +27,8 @@ SC_MODULE(RegisterFile) {
 
     void process_read(void) {
 
-        d_out_1.write(regs[address_in_1.read()]);
-        d_out_2.write(regs[address_in_2.read()]);
+        d_out_1_intermediate.write(regs[address_in_1.read()]);
+        d_out_2_intermediate.write(regs[address_in_2.read()]);
     }
 
     void process_write(void) {
@@ -79,14 +79,17 @@ SC_MODULE(RegisterFile) {
         d_ff[0]->clk(clock);
         d_ff[0]->d(addr_selected);
         d_ff[0]->q(q1);
+        d_ff[0]->reset(reset);
 
         d_ff[1]->clk(clock);
         d_ff[1]->d(q1);
         d_ff[1]->q(q2);
+        d_ff[1]->reset(reset);
 
         d_ff[2]->clk(clock);
         d_ff[2]->d(q2);
         d_ff[2]->q(addr_3_sig);
+        d_ff[2]->reset(reset);
 
         SC_METHOD(process_read);
         sensitive << address_in_1 << address_in_2;

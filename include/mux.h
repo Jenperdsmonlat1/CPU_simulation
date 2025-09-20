@@ -27,4 +27,26 @@ SC_MODULE(Mux) {
 };
 
 
+SC_MODULE(DoubleMux) {
+
+    sc_in<bool> select_port_0, select_port_1;
+    sc_in<sc_uint<32>> port_0_data, port_1_data, port_2_data;
+    sc_out<sc_uint<32>> output;
+
+
+    void process(void) {
+
+        if (select_port_0.read()) output.write(port_0_data.read());
+        else if (select_port_1.read()) output.write(port_1_data.read());
+        else output.write(port_2_data.read());
+    }
+
+    SC_CTOR(DoubleMux) {
+
+        SC_METHOD(process);
+        sensitive << select_port_0 << select_port_1 << port_0_data << port_1_data << port_2_data;
+    };
+};
+
+
 #endif

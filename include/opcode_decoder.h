@@ -12,7 +12,7 @@ SC_MODULE(OpcodeDecoder) {
 
     sc_in<bool> clk, reset;
     sc_in<sc_uint<6>> opcode;
-    sc_out<bool> alu_selection, rs_selection, move_selection_port, load_selection_port, we_selection;
+    sc_out<bool> alu_selection, rs_selection, move_selection_port, load_selection_port, we_selection, add_instruction_selection;
 
     sc_signal<bool> add_d, add_q, move_d, move_q[3], store_d, store_q[2], load_d, load_q[3], rs_sig, alu_sig;
     OR3 *or3_gate;
@@ -38,10 +38,11 @@ SC_MODULE(OpcodeDecoder) {
     void assign_output(void) {
 
         alu_selection.write(alu_sig.read());
-        we_selection.write(store_q[1]);
+        we_selection.write(store_q[1].read());
         rs_selection.write(rs_sig.read());
-        move_selection_port.write(move_q[2]);
-        load_selection_port.write(load_q[2]);
+        move_selection_port.write(move_q[2].read());
+        load_selection_port.write(load_q[2].read());
+        add_instruction_selection.write(add_q.read());
     }
 
     SC_CTOR(OpcodeDecoder) {
@@ -92,7 +93,7 @@ SC_MODULE(OpcodeDecoder) {
         or_gate->output(rs_sig);
 
         SC_METHOD(assign_output);
-        sensitive << alu_sig << rs_sig << load_q[2] << move_q[2] << store_q[1];
+        sensitive << alu_sig << rs_sig << load_q[2] << move_q[2] << store_q[1] << add_instruction_selection;
 
         SC_METHOD(read_opcode);
         sensitive << opcode;
